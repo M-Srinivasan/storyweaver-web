@@ -26,3 +26,4 @@ ngrok.yml
 # Secrets
 .env
 *.env
+Story_Weaver_APIKEY.txt

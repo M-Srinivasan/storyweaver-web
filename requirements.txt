@@ -1,3 +1,6 @@
 crewai
 json-repair
 flask
+crewai[google-genai]
+groq
+gunicorn
