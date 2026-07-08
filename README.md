@@ -1,6 +1,6 @@
 # StoryWeaver — AI Novel Generator
 
-> A multi-agent AI system that writes a full novel — world, characters, and every chapter — from a single sentence. Runs 100% locally. No API keys. No cloud costs.
+> A multi-agent AI system that writes a full novel — world, characters, and every chapter — from a single sentence. Now powered by Gemini/Groq via API and ready to be hosted on Render.
 
 ---
 
@@ -22,7 +22,7 @@
 
 | Layer | Tech |
 |-------|------|
-| LLM | [Ollama](https://ollama.com) — `llama3.1` running locally |
+| LLM | Gemini 1.5 Flash / Groq via API |
 | Agents | [CrewAI](https://crewai.com) |
 | Backend | Python + Flask (SSE streaming) |
 | Frontend | Vanilla HTML / CSS / JS |
@@ -31,15 +31,15 @@
 
 ### Prerequisites
 - Python 3.10+
-- [Ollama](https://ollama.com/download) installed
+- API Key for Gemini (`GEMINI_API_KEY`) or Groq (`GROQ_API_KEY`)
 
 ```bash
 # 1. Clone
-git clone https://github.com/YOUR_USERNAME/storyweaver.git
-cd storyweaver
+git clone https://github.com/M-Srinivasan/storyweaver-web.git
+cd storyweaver-web
 
-# 2. Pull the model (one-time download, ~4.7 GB)
-ollama pull llama3.1
+# 2. Set up environment variables
+# Set your GEMINI_API_KEY or GROQ_API_KEY in your environment
 
 # 3. Create a virtual environment and install dependencies
 python -m venv venv
@@ -53,6 +53,9 @@ python app.py
 ```
 
 Open **http://localhost:5000** in your browser.
+
+### Hosting on Render
+This project can be easily deployed to [Render](https://render.com/). Make sure to set your `GEMINI_API_KEY` (or the respective key for your chosen model) in the Environment variables in Render's dashboard. A `.python-version` file is included to ensure compatibility and avoid build errors.
 
 ## 🌐 Share via ngrok
 
@@ -95,16 +98,15 @@ storyweaver/
 
 ## ⚙️ Configuration
 
-All model settings are in the individual agent files. The model is configured as `ollama/llama3.1:latest`. To use a different model:
+All model settings are in the individual agent files. The model is currently configured to use Gemini (`gemini/gemini-1.5-flash`). To use a different model:
 
 ```python
 # In writing_agent.py, world_builder.py, etc.
 # Change this line:
-model="ollama/llama3.1:latest",
+model="gemini/gemini-1.5-flash",
 # To e.g.:
-model="ollama/mistral:latest",
-# or for a faster/smaller model:
-model="ollama/llama3.2:3b",
+model="groq/llama-3.1-8b-instant",
+# (Make sure you provide the corresponding API key in your environment)
 ```
 
 ## 📋 Requirements
@@ -117,4 +119,4 @@ flask
 
 ---
 
-*Built with CrewAI + Ollama. All inference runs on your machine.*
+*Built with CrewAI. Hosted on Render.*
