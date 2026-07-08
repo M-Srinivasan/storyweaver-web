@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StoryWeaver — AI Novel Generator</title>
+  <meta name="description" content="StoryWeaver: a multi-agent AI system that builds a full novel — world, characters, and every chapter — from a single sentence." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,600;1,9..144,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════
+       THEME TOGGLE
+  ═══════════════════════════════════════════════ -->
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle light/dark mode">
+    <svg id="theme-icon-sun" class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+    <svg id="theme-icon-moon" class="moon-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
+  </button>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 1 · HERO
+  ═══════════════════════════════════════════════ -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+
+      <!-- LEFT: Illustration -->
+      <div class="hero-image-col" data-reveal>
+        <div class="hero-image-frame">
+          <img
+            src="/static/hero.png"
+            alt="A writer at an antique desk gazing through an arched window at a luminous fantasy city at sunset"
+            class="hero-img"
+            loading="eager"
+          />
+          <p class="hero-img-caption">
+            <em>Every great story begins with a single sentence.</em>
+          </p>
+        </div>
+      </div>
+
+      <!-- RIGHT: Copy -->
+      <div class="hero-copy-col" data-reveal data-reveal-delay="100">
+        <span class="eyebrow">Story Weaver</span>
+
+        <h1 class="hero-heading">
+          <span class="hero-heading-line1">Conjure worlds.</span><br />
+          <em class="hero-heading-line2">Write legends.</em>
+        </h1>
+
+        <p class="hero-desc">
+          A multi-agent AI system builds your full novel from one sentence&nbsp;—
+          crafting the world, its characters, and every chapter with depth and craft.
+        </p>
+
+        <a href="#form-section" class="btn btn-outline hero-cta" id="hero-cta">
+          Begin your story
+          <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+
+        <div class="hero-stats" aria-label="Key statistics">
+          <div class="stat-block">
+            <svg class="stat-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M10 7v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span class="stat-number">7</span>
+            <span class="stat-label">AI Agents</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true"></div>
+          <div class="stat-block">
+            <svg class="stat-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <rect x="3" y="4" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M7 8h6M7 12h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span class="stat-number">18</span>
+            <span class="stat-label">Max Chapters</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true"></div>
+          <div class="stat-block">
+            <svg class="stat-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="7" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="13" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M1 16c0-2.21 2.686-4 6-4M13 12c3.314 0 6 1.79 6 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span class="stat-number">50</span>
+            <span class="stat-label">Max Characters</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 2 · INPUT FORM
+  ═══════════════════════════════════════════════ -->
+  <section class="form-section" id="form-section">
+    <div class="section-wrap">
+
+      <!-- Section header -->
+      <header class="section-header" data-reveal>
+        <h2 class="section-heading">
+          Craft Your <em>Story</em>
+        </h2>
+        <p class="section-subtext">Set the parameters. The agents will handle the rest.</p>
+      </header>
+
+      <form id="story-form" novalidate>
+
+        <!-- Card 1: Story Premise -->
+        <div class="form-card" data-reveal>
+          <div class="form-card-header">
+            <div class="form-card-title-row">
+              <svg class="form-card-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M4 4h12v12H4z" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M7 7h6M7 10h6M7 13h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              <span class="form-card-label">Story Premise</span>
+              <span class="ai-badge">AI</span>
+              <span class="card-num">01</span>
+            </div>
+          </div>
+          <label class="field-label" for="story_description">Describe your story world</label>
+          <textarea
+            id="story_description"
+            name="story_description"
+            class="field-textarea"
+            rows="4"
+            placeholder="e.g. A retired assassin is pulled back into the world she left behind when her estranged daughter goes missing."
+            required
+          ></textarea>
+        </div>
+
+        <!-- Card 2: Book Structure -->
+        <div class="form-card" data-reveal>
+          <div class="form-card-header">
+            <div class="form-card-title-row">
+              <svg class="form-card-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M3 8h14" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M8 8v9" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              <span class="form-card-label">Book Structure</span>
+              <span class="ai-badge">AI</span>
+              <span class="card-num">02</span>
+            </div>
+          </div>
+          <div class="slider-field">
+            <label class="field-label" for="number_of_chapters">Number of chapters</label>
+            <div class="slider-row">
+              <input
+                type="range"
+                id="number_of_chapters"
+                name="number_of_chapters"
+                class="range-slider"
+                min="4" max="18" value="5"
+                aria-valuemin="4" aria-valuemax="18" aria-valuenow="5"
+              />
+              <span class="slider-val" id="number_of_chapters_val" aria-live="polite">5</span>
+            </div>
+            <div class="slider-ticks" aria-hidden="true">
+              <span>4</span><span>8</span><span>12</span><span>18</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Character Cast -->
+        <div class="form-card" data-reveal>
+          <div class="form-card-header">
+            <div class="form-card-title-row">
+              <svg class="form-card-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="13" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M1 17c0-2.761 2.686-5 6-5h6c3.314 0 6 2.239 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              <span class="form-card-label">Character Cast</span>
+              <span class="ai-badge">AI</span>
+              <span class="card-num">03</span>
+            </div>
+          </div>
+          <div class="slider-stack">
+            <div class="slider-field">
+              <label class="field-label" for="number_of_main">Main characters</label>
+              <div class="slider-row">
+                <input type="range" id="number_of_main" name="number_of_main" class="range-slider" min="1" max="5" value="2" aria-valuemin="1" aria-valuemax="5" aria-valuenow="2"/>
+                <span class="slider-val" id="number_of_main_val" aria-live="polite">2</span>
+              </div>
+            </div>
+            <div class="slider-field">
+              <label class="field-label" for="number_of_side">Side characters</label>
+              <div class="slider-row">
+                <input type="range" id="number_of_side" name="number_of_side" class="range-slider" min="5" max="30" value="15" aria-valuemin="5" aria-valuemax="30" aria-valuenow="15"/>
+                <span class="slider-val" id="number_of_side_val" aria-live="polite">15</span>
+              </div>
+            </div>
+            <div class="slider-field">
+              <label class="field-label" for="number_of_passing">Passing characters</label>
+              <div class="slider-row">
+                <input type="range" id="number_of_passing" name="number_of_passing" class="range-slider" min="3" max="10" value="5" aria-valuemin="3" aria-valuemax="10" aria-valuenow="5"/>
+                <span class="slider-val" id="number_of_passing_val" aria-live="polite">5</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Writing Style -->
+        <div class="form-card" data-reveal>
+          <div class="form-card-header">
+            <div class="form-card-title-row">
+              <svg class="form-card-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M4 16l3-1 9-9-2-2-9 9-1 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M14 4l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              <span class="form-card-label">Writing Style</span>
+              <span class="card-num">04</span>
+            </div>
+          </div>
+
+          <div class="toggle-group-wrap">
+            <span class="field-label">Point of view</span>
+            <div class="toggle-group" id="pov" role="radiogroup" aria-label="Point of view">
+              <button type="button" class="toggle-pill active" data-group="pov" data-value="first_person" aria-checked="true" role="radio">First Person</button>
+              <button type="button" class="toggle-pill" data-group="pov" data-value="third_person" aria-checked="false" role="radio">Third Person</button>
+            </div>
+          </div>
+
+          <div class="toggle-group-wrap">
+            <span class="field-label">Tense</span>
+            <div class="toggle-group" id="tense" role="radiogroup" aria-label="Narrative tense">
+              <button type="button" class="toggle-pill active" data-group="tense" data-value="past" aria-checked="true" role="radio">Past</button>
+              <button type="button" class="toggle-pill" data-group="tense" data-value="present" aria-checked="false" role="radio">Present</button>
+            </div>
+          </div>
+
+          <div class="style-textarea-wrap">
+            <label class="field-label" for="writing_style">Tone &amp; Style</label>
+            <textarea
+              id="writing_style"
+              name="writing_style"
+              class="field-textarea"
+              rows="3"
+              placeholder="e.g. dark fantasy, slow paced, mysterious, tension builds slowly with hidden clues."
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="submit-wrap" data-reveal>
+          <button type="submit" id="generate_button" class="btn btn-filled btn-submit">
+            <span class="btn-submit-text">Weave My Story</span>
+            <span class="btn-submit-spinner" aria-hidden="true"></span>
+          </button>
+          <p class="submit-hint">Generation may take several minutes depending on chapter count.</p>
+        </div>
+
+      </form>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 3 · LIVE PROGRESS (hidden by default)
+  ═══════════════════════════════════════════════ -->
+  <section class="progress-section hidden" id="progress-section" aria-live="polite" aria-label="Story generation progress">
+    <div class="section-wrap">
+
+      <header class="section-header">
+        <h2 class="section-heading">Weaving your <em>story</em>…</h2>
+        <p class="section-subtext" id="progress-subtitle">The agents are at work. This may take a few minutes.</p>
+      </header>
+
+      <!-- Overall progress bar -->
+      <div class="progress-bar-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar-track">
+        <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        <span class="progress-bar-label" id="progress-bar-label">0%</span>
+      </div>
+
+      <!-- Step pipeline list -->
+      <ol class="pipeline-list" id="pipeline-list" aria-label="Agent pipeline steps">
+        <!-- Populated by JavaScript -->
+      </ol>
+
+      <!-- Log console -->
+      <div class="log-console" id="log-console" aria-label="Agent log output">
+        <div class="log-console-header">
+          <span class="eyebrow">Agent Log</span>
+          <button class="log-toggle-btn" id="log-toggle" aria-expanded="true" aria-controls="log-body">Hide</button>
+        </div>
+        <div class="log-body" id="log-body">
+          <!-- Log lines appended here -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 4 · FINISHED CHAPTERS
+  ═══════════════════════════════════════════════ -->
+  <section class="chapters-section hidden" id="chapters-section" aria-label="Generated chapters">
+    <div class="section-wrap">
+
+      <header class="section-header">
+        <h2 class="section-heading">Your <em>Novel</em></h2>
+        <p class="section-subtext" id="chapters-subtitle">Chapters appear below as they are written.</p>
+      </header>
+
+      <!-- Story outline accordion (populated after outline event) -->
+      <div class="outline-panel hidden" id="outline-panel">
+        <button class="outline-toggle" id="outline-toggle" aria-expanded="false" aria-controls="outline-body">
+          <span>Story Outline</span>
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="outline-chevron">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <div class="outline-body hidden" id="outline-body">
+          <!-- Outline items appended here -->
+        </div>
+      </div>
+
+      <!-- Chapter cards list -->
+      <div class="chapter-cards" id="chapter-cards">
+        <!-- Chapter cards appended here by JS -->
+      </div>
+
+      <!-- Done state -->
+      <div class="done-banner hidden" id="done-banner">
+        <div class="done-icon" aria-hidden="true">✦</div>
+        <h3 class="done-heading">Your story is complete.</h3>
+        <p class="done-sub" id="done-sub"></p>
+        <button class="btn btn-outline" onclick="location.reload()">Write Another Story</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       CHAPTER READER MODAL
+  ═══════════════════════════════════════════════ -->
+  <div class="modal-overlay hidden" id="chapter-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-inner">
+      <button class="modal-close" id="modal-close" aria-label="Close chapter">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="modal-content" id="modal-content">
+        <!-- Chapter content injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">✦</span>
+        <span class="footer-name">StoryWeaver</span>
+      </div>
+      <p class="footer-copy">Powered by CrewAI &amp; Ollama &mdash; Multi-agent AI storytelling</p>
+    </div>
+  </footer>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

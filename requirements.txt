@@ -1,0 +1,3 @@
+crewai
+json-repair
+flask
