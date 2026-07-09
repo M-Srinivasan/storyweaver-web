@@ -7,8 +7,7 @@ import json
 # ---- 1. Connect to your Ollama server ----
 import os
 
-# Old setup (commented out):
-# llm = ChatGroq(
+llm = ChatGroq(
     model="llama-3.1-8b-instant",
     api_key=os.environ.get("GROQ_API_KEY", "")
 )
