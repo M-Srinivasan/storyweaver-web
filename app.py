@@ -328,10 +328,14 @@ def get_chapters():
 @app.route("/status")
 def status():
     return jsonify({"running": _generation_running})
-# ── entry point ───────────────────────────────────────────────────────────────
-def start_server(host="127.0.0.1", port=5000, open_browser=True):
-    if open_browser:
+def start_server():
+    port = int(os.environ.get("PORT", 5000))
+    host = "0.0.0.0" if "PORT" in os.environ else "127.0.0.1"
+    
+    if host == "127.0.0.1":
         threading.Timer(1.2, lambda: webbrowser.open(f"http://{host}:{port}")).start()
+        
     app.run(host=host, port=port, debug=False, threaded=True)
+
 if __name__ == "__main__":
     start_server()
