@@ -9,6 +9,28 @@ import queue
 import threading
 import webbrowser
 from flask import Flask, render_template, request, jsonify, Response, stream_with_context
+
+import litellm
+
+_original_completion = litellm.completion
+_original_acompletion = litellm.acompletion
+
+def _patched_completion(*args, **kwargs):
+    if "messages" in kwargs:
+        for m in kwargs["messages"]:
+            if "cache_breakpoint" in m:
+                del m["cache_breakpoint"]
+    return _original_completion(*args, **kwargs)
+
+async def _patched_acompletion(*args, **kwargs):
+    if "messages" in kwargs:
+        for m in kwargs["messages"]:
+            if "cache_breakpoint" in m:
+                del m["cache_breakpoint"]
+    return await _original_acompletion(*args, **kwargs)
+
+litellm.completion = _patched_completion
+litellm.acompletion = _patched_acompletion
 # ── project modules ──────────────────────────────────────────────────────────
 from story_bible import create_empty_story_bible, save_story_bible
 from story_planner import plan_story

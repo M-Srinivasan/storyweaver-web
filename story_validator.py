@@ -10,7 +10,7 @@ import litellm
 litellm.drop_params = True
 
 llm = LLM(
-    model="gemini/gemini-pro", api_key=os.environ.get("GEMINI_API_KEY", "")
+    model="groq/llama-3.1-8b-instant", api_key=os.environ.get("GROQ_API_KEY", "")
 )
 
 # ---- 2. Define the agent ----
