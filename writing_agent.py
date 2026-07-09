@@ -4,7 +4,6 @@ Context Package (the real facts it's allowed to use) and turn that into
 an actual chapter of writing.
 """
 
-from langchain_groq import ChatGroq
 from crewai import Agent, Task, Crew, LLM
 from crewai.process import Process
 
@@ -12,9 +11,13 @@ from crewai.process import Process
 # ---- 1. Connect to your Ollama server ----
 import os
 
-llm = ChatGroq(
-    model="llama-3.1-8b-instant",
+import litellm
+litellm.drop_params = True
+
+llm = LLM(
+    model="groq/llama-3.1-8b-instant",
     api_key=os.environ.get("GROQ_API_KEY", "")
+)
 )
 
 # ---- 2. Define the agent ----

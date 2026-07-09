@@ -1,4 +1,3 @@
-from langchain_groq import ChatGroq
 from crewai import Agent, Task, Crew, LLM
 from crewai.process import Process
 from json_repair import repair_json
@@ -8,9 +7,13 @@ import json
 # ---- 1. Connect to your Ollama server ----
 import os
 
-llm = ChatGroq(
-    model="llama-3.1-8b-instant",
+import litellm
+litellm.drop_params = True
+
+llm = LLM(
+    model="groq/llama-3.1-8b-instant",
     api_key=os.environ.get("GROQ_API_KEY", "")
+)
 )
 
 # ---- 2. Define the agent ----
