@@ -14,14 +14,8 @@ import os
 
 # New setup: Gemini Primary with Groq Fallback
 llm = LLM(
-    model="gemini/gemini-1.5-pro",
-    api_key=os.environ.get("GEMINI_API_KEY", ""),
-    fallbacks=[
-        {
-            "model": "groq/llama-3.1-8b-instant",
-            "api_key": os.environ.get("GROQ_API_KEY", "")
-        }
-    ]
+    model="groq/llama-3.1-8b-instant",
+    api_key=os.environ.get("GROQ_API_KEY", "")
 )
 
 # ---- 2. Define the agent ----
