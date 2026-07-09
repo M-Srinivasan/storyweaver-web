@@ -19,7 +19,7 @@ import os
 
 # New setup: Gemini Primary with Groq Fallback
 llm = LLM(
-    model="gemini/gemini-1.5-flash",
+    model="gemini/gemini-1.5-flash-latest",
     api_key=os.environ.get("GEMINI_API_KEY", ""),
     fallbacks=[
         {
