@@ -11,6 +11,9 @@ import webbrowser
 from flask import Flask, render_template, request, jsonify, Response, stream_with_context
 
 import litellm
+import time
+import asyncio
+from litellm.exceptions import RateLimitError, APIConnectionError, InternalServerError, ServiceUnavailableError
 
 _original_completion = litellm.completion
 _original_acompletion = litellm.acompletion
@@ -20,14 +23,34 @@ def _patched_completion(*args, **kwargs):
         for m in kwargs["messages"]:
             if "cache_breakpoint" in m:
                 del m["cache_breakpoint"]
-    return _original_completion(*args, **kwargs)
+    
+    max_retries = 10
+    for attempt in range(max_retries):
+        try:
+            return _original_completion(*args, **kwargs)
+        except (RateLimitError, APIConnectionError, InternalServerError, ServiceUnavailableError) as e:
+            if attempt == max_retries - 1:
+                raise
+            err_type = type(e).__name__
+            print(f"\\n[!] Groq {err_type} Hit. Sleeping 10 seconds... (Attempt {attempt+1}/{max_retries})\\n")
+            time.sleep(10)
 
 async def _patched_acompletion(*args, **kwargs):
     if "messages" in kwargs:
         for m in kwargs["messages"]:
             if "cache_breakpoint" in m:
                 del m["cache_breakpoint"]
-    return await _original_acompletion(*args, **kwargs)
+    
+    max_retries = 10
+    for attempt in range(max_retries):
+        try:
+            return await _original_acompletion(*args, **kwargs)
+        except (RateLimitError, APIConnectionError, InternalServerError, ServiceUnavailableError) as e:
+            if attempt == max_retries - 1:
+                raise
+            err_type = type(e).__name__
+            print(f"\\n[!] Groq {err_type} Hit. Sleeping 10 seconds... (Attempt {attempt+1}/{max_retries})\\n")
+            await asyncio.sleep(10)
 
 litellm.completion = _patched_completion
 litellm.acompletion = _patched_acompletion
@@ -165,8 +188,17 @@ def run_generation(form_data: dict):
                 previous_chapter_ending=previous_chapter_ending
             )
             if scene_blueprint is None:
-                _log(f"   ⚠️  Scene Planner failed for chapter {chapter_num} — skipping.")
-                continue
+                _log(f"   ⚠️  Scene Planner failed for chapter {chapter_num} — using fallback blueprint.")
+                scene_blueprint = {
+                    "objective": chapter["synopsis"],
+                    "conflict": "Unexpected challenges arise.",
+                    "emotion": "Determined",
+                    "ending_condition": "The characters make a decision on how to proceed.",
+                    "characters": all_character_names[:2] if all_character_names else [],
+                    "location": all_region_names[0] if all_region_names else "Unknown",
+                    "required_memories": [],
+                    "required_plot_threads": []
+                }
             context_package = compose_context(scene_blueprint, story_bible)
             # write + validate loop
             max_attempts  = 4

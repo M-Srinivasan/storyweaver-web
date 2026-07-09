@@ -63,6 +63,7 @@ const DOM = {
   modalContent:      $('modal-content'),
   modalClose:        $('modal-close'),
   heroCta:           $('hero-cta'),
+  downloadAllBtn:    $('download-all-btn'),
 };
 
 /* ═══════════════════════════════════════════════════════
@@ -460,7 +461,15 @@ function renderChapterCard(chapter) {
   card.style.animationDelay = `${(state.chapters.length - 1) * 0.08}s`;
 
   card.innerHTML = `
-    <span class="chapter-card-badge">Chapter ${chapter.number}</span>
+    <div class="chapter-card-top-row">
+      <span class="chapter-card-badge">Chapter ${chapter.number}</span>
+      <button class="btn-download-sm btn-download" data-chapter-idx="${state.chapters.length - 1}" aria-label="Download chapter ${chapter.number}" title="Download TXT">
+        Download
+        <svg viewBox="0 0 16 16" fill="none" class="btn-arrow" aria-hidden="true" style="width:12px;height:12px; margin-left:6px;">
+          <path d="M8 3v8M4 7l4 4 4-4M3 14h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
     <h3 class="chapter-card-title">${escHtml(chapter.title)}</h3>
     <p class="chapter-card-teaser">${escHtml(teaser)}</p>
     <p class="chapter-card-preview">${escHtml(preview)}</p>
@@ -478,6 +487,14 @@ function renderChapterCard(chapter) {
   card.querySelector('.btn-read').addEventListener('click', e => {
     const idx = parseInt(e.currentTarget.dataset.chapterIdx);
     openChapterModal(state.chapters[idx]);
+  });
+
+  // Wire up download button
+  card.querySelector('.btn-download').addEventListener('click', e => {
+    const idx = parseInt(e.currentTarget.dataset.chapterIdx);
+    const c = state.chapters[idx];
+    const text = `Chapter ${c.number}: ${c.title}\n\n${c.text}`;
+    downloadAsTxt(`Chapter_${c.number}_${c.title.replace(/[^a-z0-9]/gi, '_')}.txt`, text);
   });
 
   DOM.chapterCards.appendChild(card);
@@ -787,6 +804,18 @@ function escHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
+function downloadAsTxt(filename, text) {
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 /* ═══════════════════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════════════════ */
@@ -802,6 +831,19 @@ function init() {
 
   // Form submission
   DOM.form.addEventListener('submit', handleSubmit);
+
+  // Download All
+  if (DOM.downloadAllBtn) {
+    DOM.downloadAllBtn.addEventListener('click', () => {
+      if (!state.chapters.length) return;
+      let fullText = "StoryWeaver Novel\n\n";
+      state.chapters.forEach(c => {
+        fullText += `--- Chapter ${c.number}: ${c.title} ---\n\n`;
+        fullText += `${c.text}\n\n`;
+      });
+      downloadAsTxt('StoryWeaver_Full_Novel.txt', fullText);
+    });
+  }
 
   // "Weave Another Story" resets state
   document.addEventListener('click', e => {

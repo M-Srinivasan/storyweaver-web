@@ -826,15 +826,15 @@ a { color: inherit; text-decoration: none; }
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(ellipse 70% 50% at 50% 80%, rgba(40, 28, 10, 0.55) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 30% at 20% 90%, rgba(20, 40, 35, 0.35) 0%, transparent 60%);
+    radial-gradient(ellipse 70% 50% at 50% 80%, rgba(212, 162, 78, 0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 20% 90%, rgba(90, 158, 122, 0.1) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
 }
-:root[data-theme="light"] .chapters-section::before {
+[data-theme="dark"] .chapters-section::before {
   background:
-    radial-gradient(ellipse 70% 50% at 50% 80%, rgba(212, 162, 78, 0.15) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 30% at 20% 90%, rgba(90, 158, 122, 0.1) 0%, transparent 60%);
+    radial-gradient(ellipse 70% 50% at 50% 80%, rgba(40, 28, 10, 0.55) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 20% 90%, rgba(20, 40, 35, 0.35) 0%, transparent 60%);
 }
 .chapters-section .section-wrap { position: relative; z-index: 1; }
 
@@ -932,6 +932,12 @@ a { color: inherit; text-decoration: none; }
   box-shadow: 0 8px 40px rgba(0,0,0,0.4);
 }
 
+.chapter-card-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
 .chapter-card-badge {
   display: inline-block;
   font-size: 10px;
@@ -943,7 +949,24 @@ a { color: inherit; text-decoration: none; }
   border: 1px solid rgba(212,162,78,0.35);
   border-radius: var(--r-pill);
   padding: 3px 10px;
-  margin-bottom: 14px;
+}
+.btn-download-sm {
+  padding: 4px 12px;
+  font-size: 11px;
+  min-height: 26px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  transition: all var(--ease);
+}
+.btn-download-sm:hover {
+  border-color: var(--gold);
+  color: var(--gold);
 }
 .chapter-card-title {
   font-family: var(--font-serif);
@@ -1007,6 +1030,11 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: -0.01em;
 }
 .done-sub { color: var(--text-muted); font-size: 15px; margin-bottom: 28px; }
+.done-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
 
 /* ═══════════════════════════════════════════════════════
    CHAPTER READER MODAL
