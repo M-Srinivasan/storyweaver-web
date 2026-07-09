@@ -13,7 +13,6 @@ llm = LLM(
     model="groq/llama-3.1-8b-instant",
     api_key=os.environ.get("GROQ_API_KEY", "")
 )
-)
 
 # ---- 2. Define the agent ----
 scene_planner_agent = Agent(
