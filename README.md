@@ -1,6 +1,8 @@
 # StoryWeaver — AI Novel Generator
 
-> A multi-agent AI system that writes a full novel — world, characters, and every chapter — from a single sentence. Now powered by Gemini/Groq via API and ready to be hosted on Render.
+[![Render](https://img.shields.io/badge/Live%20Demo%20on%20Render-%2346E3B7.svg?style=for-the-badge&logo=render&logoColor=white)](https://storyweaver-web.onrender.com)
+
+> A multi-agent AI system that writes a full novel — world, characters, and every chapter — from a single sentence. Now powered by Gemini/Groq via API, featuring a Neon Dark Mode and Default Light Mode UI, and hosted 24/7 on Render.
 
 ---
 
