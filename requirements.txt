@@ -5,3 +5,4 @@ crewai[google-genai]
 groq
 gunicorn
 litellm
+langchain-groq

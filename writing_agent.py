@@ -4,6 +4,7 @@ Context Package (the real facts it's allowed to use) and turn that into
 an actual chapter of writing.
 """
 
+from langchain_groq import ChatGroq
 from crewai import Agent, Task, Crew, LLM
 from crewai.process import Process
 
@@ -12,14 +13,8 @@ from crewai.process import Process
 import os
 
 # Old setup (commented out):
-# llm = LLM(
-#     model="ollama/llama3.1:latest",
-#     base_url="http://192.168.1.16:11434" #"http://localhost:11434"
-# )
-
-# New setup: Gemini Primary with Groq Fallback
-llm = LLM(
-    model="groq/llama-3.1-8b-instant",
+# llm = ChatGroq(
+    model="llama-3.1-8b-instant",
     api_key=os.environ.get("GROQ_API_KEY", "")
 )
 
