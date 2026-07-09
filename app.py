@@ -116,11 +116,26 @@ def run_generation(form_data: dict):
             _log("❌ Story Planner failed — try running again.")
             _emit("error", "Story Planner returned invalid JSON.")
             return
-        story_bible["metadata"]["genre"]             = outline.get("genre", "")
-        story_bible["story_structure"]["chapters"]   = outline.get("chapters", [])
-        story_bible["story_structure"]["ending"]     = outline.get("ending", "")
-        style_info["genre"]                          = outline.get("genre", "")
-        _story_outline                               = outline.get("chapters", [])
+        story_bible["metadata"]["genre"] = outline.get("genre", "")
+        
+        # Force exactly number_of_chapters and sequential numbering
+        chapters = outline.get("chapters", [])
+        while len(chapters) < number_of_chapters:
+            chapters.append({
+                "chapter_number": len(chapters) + 1,
+                "title": f"Chapter {len(chapters) + 1}",
+                "synopsis": "The story continues."
+            })
+        chapters = chapters[:number_of_chapters]
+        for i, c in enumerate(chapters, 1):
+            c["chapter_number"] = i
+            if not c.get("title"):
+                c["title"] = f"Chapter {i}"
+        
+        story_bible["story_structure"]["chapters"] = chapters
+        story_bible["story_structure"]["ending"]   = outline.get("ending", "")
+        style_info["genre"]                        = outline.get("genre", "")
+        _story_outline                             = chapters
         _log(f"✅ Outline done — genre: {outline.get('genre', 'unknown')}")
         _emit("outline", {
             "genre":   outline.get("genre", ""),
