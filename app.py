@@ -5,6 +5,18 @@ streaming every log line to the browser via Server-Sent Events (SSE).
 """
 import json
 import os
+
+# Auto-load API keys from local text file so you don't need to set env vars
+try:
+    with open("Story_Weaver_APIKEY.txt", "r") as f:
+        for line in f:
+            if "Groq_API key" in line and "=" in line:
+                os.environ["GROQ_API_KEY"] = line.split("=", 1)[1].strip()
+            elif "Gemini_API Key" in line and "=" in line:
+                os.environ["GEMINI_API_KEY"] = line.split("=", 1)[1].strip()
+except Exception:
+    pass
+
 import queue
 import threading
 import webbrowser
