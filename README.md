@@ -59,20 +59,6 @@ Open **http://localhost:5000** in your browser.
 ### Hosting on Render
 This project can be easily deployed to [Render](https://render.com/). Make sure to set your `GEMINI_API_KEY` (or the respective key for your chosen model) in the Environment variables in Render's dashboard. A `.python-version` file is included to ensure compatibility and avoid build errors.
 
-## 🌐 Share via ngrok
-
-To make it accessible from any device:
-
-```bash
-# Terminal 1: start the app
-python app.py
-
-# Terminal 2: create a public tunnel
-ngrok http 5000
-```
-
-Copy the `https://xxxx.ngrok-free.app` URL and share it.
-
 ## 📁 Project Structure
 
 ```
