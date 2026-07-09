@@ -76,24 +76,29 @@ function initTheme() {
 
   // Check saved theme or system preference
   const savedTheme = localStorage.getItem('theme');
-  if (savedTheme === 'light') {
-    document.documentElement.setAttribute('data-theme', 'light');
+  if (savedTheme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    iconSun.classList.remove('hidden');
+    iconMoon.classList.add('hidden');
+  } else {
+    // Default to light
+    document.documentElement.removeAttribute('data-theme');
     iconSun.classList.add('hidden');
     iconMoon.classList.remove('hidden');
   }
 
   toggleBtn.addEventListener('click', () => {
-    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-    if (isLight) {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (isDark) {
       document.documentElement.removeAttribute('data-theme');
-      localStorage.setItem('theme', 'dark');
-      iconSun.classList.remove('hidden');
-      iconMoon.classList.add('hidden');
-    } else {
-      document.documentElement.setAttribute('data-theme', 'light');
       localStorage.setItem('theme', 'light');
       iconSun.classList.add('hidden');
       iconMoon.classList.remove('hidden');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+      iconSun.classList.remove('hidden');
+      iconMoon.classList.add('hidden');
     }
   });
 }
