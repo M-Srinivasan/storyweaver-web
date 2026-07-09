@@ -11,7 +11,7 @@ import litellm
 litellm.drop_params = True
 
 llm = LLM(
-    model="openai/llama-3.1-8b-instant", base_url="https://api.groq.com/openai/v1", api_key=os.environ.get("GROQ_API_KEY", "")
+    model="gemini/gemini-pro", api_key=os.environ.get("GEMINI_API_KEY", "")
 )
 
 # ---- 2. Define the agent ----
