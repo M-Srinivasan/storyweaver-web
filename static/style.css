@@ -54,31 +54,34 @@
   --log-bg:       rgba(0, 0, 0, 0.04);
   --log-header-bg:rgba(0, 0, 0, 0.03);
   --progress-track: rgba(0, 0, 0, 0.08);
+  --text-glow:    none;
 }
 
-/* Dark mode variables (Neon Theme) */
+/* Dark mode variables (Vibrant Navy Theme) */
 :root[data-theme="dark"] {
   /* Colors */
-  --bg:           #0f0d14; /* Less gloomy dark, slight purple tint */
-  --bg-card:      #181521;
-  --bg-input:     #211d2e;
-  --bg-glass:     rgba(24, 21, 33, 0.7);
+  --bg:           #050B14; /* Deep Navy, not pitch black */
+  --bg-card:      #0A1121; /* Slightly lighter navy for cards */
+  --bg-input:     #10182B;
+  --bg-glass:     rgba(10, 17, 33, 0.65); /* Glassy effect */
   --border:       rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(255, 0, 255, 0.50); /* Neon Pink hover */
-  --border-focus: rgba(0, 255, 255, 0.65); /* Neon Blue focus */
-  --border-glass: rgba(255, 255, 255, 0.12);
+  --border-hover: rgba(0, 229, 255, 0.50); /* Cyan hover */
+  --border-focus: rgba(136, 112, 255, 0.65); /* Indigo focus */
+  --border-glass: rgba(255, 255, 255, 0.15);
 
-  --gold:         #ff00ff; /* Neon Pink (Primary Accent) */
-  --gold-bright:  #00ffff; /* Neon Blue (Hover Accent) */
-  --gold-dim:     rgba(255, 0, 255, 0.18);
-  --gold-glow:    rgba(0, 255, 255, 0.20);
+  --gold:         #00E5FF; /* Cyan (Primary Accent) */
+  --gold-bright:  #8870FF; /* Vibrant Indigo (Hover Accent) */
+  --gold-dim:     rgba(0, 229, 255, 0.15);
+  --gold-glow:    rgba(136, 112, 255, 0.20);
 
-  --text:         #f0ede6;
-  --text-muted:   #a8a29e;
-  --text-dim:     #6b6460;
+  --text:         #ffffff; /* White text */
+  --text-muted:   #9ca3af;
+  --text-dim:     #6b7280;
 
-  --green:        #00ffaa; /* Neon Green */
-  --red:          #ff0055; /* Neon Red */
+  --green:        #00FF9D; /* Mint Green */
+  --red:          #FF4D80; /* Pinkish Red */
+  
+  --text-glow:    0 0 10px rgba(220, 230, 255, 0.65); /* Silver lining/shade around text */
 
   /* Element specifics */
   --slider-track: rgba(255, 255, 255, 0.12);
@@ -108,6 +111,7 @@ body {
   font-size: 16px;
   line-height: 1.65;
   overflow-x: hidden;
+  text-shadow: var(--text-glow, none);
 }
 
 img { max-width: 100%; display: block; }
