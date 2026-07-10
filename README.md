@@ -1,69 +1,94 @@
-# StoryWeaver — AI Novel Generator
+# Story Weaver — AI Novel Generator
 
 [![Render](https://img.shields.io/badge/Live%20Demo%20on%20Render-%2346E3B7.svg?style=for-the-badge&logo=render&logoColor=white)](https://storyweaver-web.onrender.com)
 
-> A multi-agent AI system that writes a full novel — world, characters, and every chapter — from a single sentence. Now powered by Gemini/Groq via API, featuring a Neon Dark Mode and Default Light Mode UI, and hosted 24/7 on Render.
+> A multi-agent AI system that writes a full novel — world, characters, and every chapter — from a single sentence. Powered by **CrewAI** and **Groq (Llama 3.1)** for lightning-fast inference, featuring a beautiful UI, chapter downloads, and live Server-Sent Events (SSE) streaming.
 
 ---
 
 ## ✨ What it does
 
-1. You type one sentence describing a story
-2. Seven AI agents go to work:
-   - **Story Planner** — builds the chapter-by-chapter outline
-   - **World Builder** — designs the world, locations, lore
-   - **Character Builder** — creates every character with backstories
-   - **Scene Planner** (per chapter) — plans scene beats
-   - **Writing Agent** (per chapter) — writes the full chapter
-   - **Validator** (per chapter) — checks consistency
-   - **Story Bible Updater** (per chapter) — keeps continuity
-3. You watch each chapter appear live as it's written
-4. Read your novel in the built-in dark editorial reader
+1. **You type one sentence** describing a story idea.
+2. **Seven AI agents go to work:**
+   - **Story Planner** — Builds the chapter-by-chapter outline.
+   - **World Builder** — Designs the world, locations, and magical laws.
+   - **Character Builder** — Creates every character with deep backstories.
+   - **Scene Planner** (per chapter) — Maps out scene beats and emotional direction.
+   - **Writing Agent** (per chapter) — Writes the full chapter prose.
+   - **Validator** (per chapter) — Checks consistency and forces rewrites if agents break rules.
+   - **Story Bible Updater** (per chapter) — Keeps continuity and memories alive.
+3. You watch each chapter appear **live** as it is written.
+4. Download your finished novel seamlessly!
 
 ## 🖥️ Stack
 
 | Layer | Tech |
 |-------|------|
-| LLM | Gemini 1.5 Flash / Groq via API |
-| Agents | [CrewAI](https://crewai.com) |
-| Backend | Python + Flask (SSE streaming) |
-| Frontend | Vanilla HTML / CSS / JS |
+| **LLM Inference** | Groq (`llama-3.1-8b-instant`) |
+| **Agent Framework** | [CrewAI](https://crewai.com) + LiteLLM |
+| **Backend** | Python + Flask |
+| **Frontend** | Vanilla HTML / CSS / JS (SSE streaming) |
 
-## ⚡ Quick Start
+---
+
+## ⚡ Quick Start (Local Setup)
 
 ### Prerequisites
 - Python 3.10+
-- API Key for Gemini (`GEMINI_API_KEY`) or Groq (`GROQ_API_KEY`)
+- A Groq API Key (You can get one for free at [Groq.com](https://console.groq.com/))
 
+### 1. Clone & Install
 ```bash
-# 1. Clone
 git clone https://github.com/M-Srinivasan/storyweaver-web.git
 cd storyweaver-web
 
-# 2. Set up environment variables
-# Set your GEMINI_API_KEY or GROQ_API_KEY in your environment
-
-# 3. Create a virtual environment and install dependencies
+# Create and activate a virtual environment
 python -m venv venv
 venv\Scripts\activate        # Windows
 # source venv/bin/activate   # Mac/Linux
 
+# Install dependencies
 pip install -r requirements.txt
-
-# 4. Run
-python app.py
 ```
 
-Open **http://localhost:5000** in your browser.
+### 2. Set Up Your API Key (The Easy Way)
+Instead of dealing with terminal environment variables, you can create a simple text file in the project folder to auto-load your API key!
+1. Create a file named `Story_Weaver_APIKEY.txt` in the root folder.
+2. Add the following line to it:
+   ```text
+   Groq_API key = gsk_your_api_key_here
+   ```
+*(The backend will automatically find this file and securely load your key every time you run it!)*
 
-### Hosting on Render
-This project can be easily deployed to [Render](https://render.com/). Make sure to set your `GEMINI_API_KEY` (or the respective key for your chosen model) in the Environment variables in Render's dashboard. A `.python-version` file is included to ensure compatibility and avoid build errors.
+### 3. Run the App
+```bash
+python app.py
+```
+Open **http://127.0.0.1:5000** in your browser to start weaving!
+
+---
+
+## ☁️ Hosting on Render
+
+This project is fully configured to be deployed easily on [Render.com](https://render.com/).
+
+### Important Deployment Instructions:
+1. Connect your GitHub repository to Render as a **Web Service**.
+2. **Environment Variables**: Add your `GROQ_API_KEY` in the Render environment variables tab.
+3. **Start Command (CRITICAL)**: By default, Render uses `gunicorn`, which forcefully buffers streaming data and causes a 30-second timeout disconnect during generation. 
+   To fix this, change your Start Command in Render to:
+   ```bash
+   python app.py
+   ```
+   *(The `app.py` file is smart enough to detect it is on Render and will automatically bind to the correct network ports natively, bypassing all timeouts!)*
+
+---
 
 ## 📁 Project Structure
 
-```
-storyweaver/
-├── app.py                  # Flask server + SSE streaming
+```text
+storyweaver-web/
+├── app.py                  # Flask server + SSE streaming & Port binding
 ├── story_planner.py        # Story outline agent
 ├── world_builder.py        # World creation agent
 ├── character_builder.py    # Character creation agent
@@ -73,38 +98,14 @@ storyweaver/
 ├── story_bible_updater.py  # Continuity updater
 ├── story_bible.py          # Story bible data model
 ├── context_composer.py     # Assembles context for each agent
-├── style_guide.py          # Writing style utilities
 ├── templates/
 │   └── index.html          # Web UI
 ├── static/
-│   ├── style.css           # Dark editorial-fantasy theme
-│   ├── script.js           # Vanilla JS (SSE client)
-│   └── hero.png            # AI-generated hero illustration
+│   ├── style.css           # UI Styling
+│   └── script.js           # Vanilla JS (SSE client & frontend logic)
 ├── requirements.txt
 └── README.md
 ```
 
-## ⚙️ Configuration
-
-All model settings are in the individual agent files. The model is currently configured to use Gemini (`gemini/gemini-1.5-flash`). To use a different model:
-
-```python
-# In writing_agent.py, world_builder.py, etc.
-# Change this line:
-model="gemini/gemini-1.5-flash",
-# To e.g.:
-model="groq/llama-3.1-8b-instant",
-# (Make sure you provide the corresponding API key in your environment)
-```
-
-## 📋 Requirements
-
-```
-crewai
-json-repair
-flask
-```
-
 ---
-
 *Built with CrewAI. Hosted on Render.*
